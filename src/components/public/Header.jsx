@@ -65,7 +65,7 @@ const Header = () => {
           {theme ? <FaMoon /> : <FaSun className="text-orange-500" />}
         </button>
       </div>
-      {user ? (
+      {!user ? (
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="cursor-pointer m-1">
             <Image

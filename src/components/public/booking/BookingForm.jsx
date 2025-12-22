@@ -10,12 +10,13 @@ const BookingForm = ({ wareHouses }) => {
     },
   });
   const division = useWatch({ control, name: "division" });
-  const district = useWatch({ control, name: "district" });
   const durationType = useWatch({ control, name: "durationType" });
   const duration = useWatch({ control, name: "duration" });
   const [cost, setCost] = useState(0);
-  const PRICE_PER_DAY = 50;
-  const PRICE_PER_HOUR = 10;
+
+  const PRICE_PER_DAY = 200;
+  const PRICE_PER_HOUR = 30;
+
   useEffect(() => {
     if (!duration || duration <= 0) {
       setCost(0);
@@ -76,6 +77,7 @@ const BookingForm = ({ wareHouses }) => {
         <input
           type="number"
           min={1}
+          placeholder="Enter duration"
           {...register("duration")}
           required
           className="input w-full"
@@ -127,12 +129,14 @@ const BookingForm = ({ wareHouses }) => {
       </div>
 
       {/* Total Cost */}
-      <div className="mt-2 font-semibold text-xl">Total Cost: ৳ {cost}</div>
+      <div className="mt-2 font-semibold text-lg">
+        Total Cost: <span className="text-secondary">${cost}</span>
+      </div>
 
       {/* Confirm Booking */}
       <button
         // onClick={handleBooking}
-        className="btn btn-secondary mt-4 font-semibold"
+        className="btn btn-secondary skeleton bg-secondary hover:scale-105 transition mt-4 font-semibold"
       >
         Confirm Booking
       </button>

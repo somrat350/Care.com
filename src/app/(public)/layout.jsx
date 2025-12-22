@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import Header from "@/components/public/Header";
 import Footer from "@/components/public/Footer";
+import AuthProvider from "@/components/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,7 @@ export default function RootLayout({ children }) {
       >
         <Header />
         <div className="grow w-full max-w-360 mx-auto my-5 px-5">
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </div>
         <Footer />
       </body>
