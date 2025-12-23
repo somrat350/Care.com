@@ -19,9 +19,6 @@ const BookingForm = ({ wareHouses, service }) => {
   const duration = useWatch({ control, name: "duration" });
   const [cost, setCost] = useState(0);
 
-  const PRICE_PER_DAY = 200;
-  const PRICE_PER_HOUR = 30;
-
   useEffect(() => {
     if (!duration || duration <= 0) {
       setCost(0);
@@ -29,11 +26,11 @@ const BookingForm = ({ wareHouses, service }) => {
     }
 
     if (durationType === "days") {
-      setCost(duration * PRICE_PER_DAY);
+      setCost(duration * service.costPerDay);
     } else if (durationType === "hours") {
-      setCost(duration * PRICE_PER_HOUR);
+      setCost(duration * service.costPerHour);
     }
-  }, [duration, durationType]);
+  }, [duration, durationType, service]);
 
   const divisionsDuplicate = wareHouses?.map((house) => house.division);
   const divisions = [...new Set(divisionsDuplicate)];

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaWheelchair } from "react-icons/fa";
 import { FaBaby, FaPersonCane, FaUserNurse } from "react-icons/fa6";
 
@@ -54,6 +55,14 @@ export default function ServicesOverview() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <Link
+            href={"/services"}
+            className="btn btn-lg btn-secondary skeleton bg-secondary hover:scale-110 transition"
+          >
+            See All Services
+          </Link>
         </div>
       </div>
     </section>

@@ -1,3 +1,5 @@
+"use server";
+
 import PrivatePageProtector from "@/components/PrivatePageProtector";
 import CancelBookingButton from "@/components/public/booking/CancelBookingButton";
 import { getServerSession } from "next-auth";
@@ -18,11 +20,14 @@ const MyBookingsPage = async () => {
 
   return (
     <PrivatePageProtector>
+      <title>My Bookings || Care.com</title>
       <div className="max-w-7xl mx-auto my-10">
         <h1 className="text-4xl font-bold text-secondary mb-8">My Bookings</h1>
 
         {bookings.length === 0 ? (
-          <p className="text-base-content/70">You have no bookings yet.</p>
+          <p className="text-base-content text-center">
+            You have no bookings yet.
+          </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="table">

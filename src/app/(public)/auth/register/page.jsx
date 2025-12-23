@@ -52,6 +52,7 @@ export default function Register() {
 
   return (
     <div className="flex items-center justify-center my-10">
+      <title>Register | Care.com</title>
       <form
         onSubmit={handleSubmit(formSubmit)}
         className="card w-full max-w-xl bg-base-300 border border-secondary shadow-xl p-6"

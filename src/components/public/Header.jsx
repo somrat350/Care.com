@@ -12,7 +12,7 @@ import { signOut, useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 
 const Header = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const user = session?.user;
 
   const [openMenu, setOpenMenu] = useState(false);
@@ -52,6 +52,8 @@ const Header = () => {
       .setAttribute("data-theme", theme ? "dark" : "light");
     localStorage.setItem("assignment-no12-theme", JSON.stringify(theme));
   }, [theme]);
+
+  if (status === "loading") return;
 
   const menuLink = (
     <>

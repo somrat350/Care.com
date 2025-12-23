@@ -5,23 +5,22 @@ import Image from "next/image";
 import BookingForm from "@/components/public/booking/BookingForm";
 import PrivatePageProtector from "@/components/PrivatePageProtector";
 
-const services = [
-  {
-    _id: 1,
-    img: "https://img.freepik.com/premium-photo/woman-pink-shirt-sits-floor-living-room_85574-10046.jpg?w=1060",
-    title: "Baby Care",
-    pricePerDay: 50,
-  },
-];
+const getServiceDetails = async (id) => {
+  const data =
+    (await fetch(`${process.env.NEXTAUTH_URL}/api/services/${id}`).then((res) =>
+      res.json()
+    )) || [];
+  return data;
+};
 
 const wareHouses =
-  (await fetch("http://localhost:3000/location.json").then((res) =>
+  (await fetch(`${process.env.NEXTAUTH_URL}/location.json`).then((res) =>
     res.json()
   )) || [];
 
 const BookingPage = async ({ params }) => {
   const { service_id } = await params;
-  const service = services.find((s) => s._id == service_id);
+  const service = await getServiceDetails(service_id);
 
   // If service not found
   if (!service) {
@@ -63,3 +62,34 @@ const BookingPage = async ({ params }) => {
 };
 
 export default BookingPage;
+
+export async function generateMetadata({ params }) {
+  const { service_id } = await params;
+  const service = await getServiceDetails(service_id);
+
+  if (!service) {
+    return {
+      title: "Service Not Found | Care.com",
+    };
+  }
+
+  return {
+    title: `${service.title} | Care.com`,
+    description: service.desc,
+    openGraph: {
+      title: service.title,
+      description: service.desc,
+      url: `${process.env.NEXTAUTH_URL}/services/${service_id}`,
+      siteName: "Care.com",
+      images: [
+        {
+          url: service.img,
+          width: 800,
+          height: 600,
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+  };
+}

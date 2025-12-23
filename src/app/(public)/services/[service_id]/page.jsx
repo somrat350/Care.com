@@ -1,21 +1,14 @@
-// "use client";
+"use server";
 
 import Image from "next/image";
 import Link from "next/link";
 
-const services = [
-  {
-    _id: 1,
-    img: "https://img.freepik.com/premium-photo/woman-pink-shirt-sits-floor-living-room_85574-10046.jpg?w=1060",
-    title: "Baby Care",
-    desc: "Professional and loving caregivers to support newborns, toddlers, and young children in a safe and nurturing environment.",
-    details:
-      "Our Baby Care service ensures newborns, toddlers, and young children receive personalized attention, safe handling, feeding assistance, and playful activities. Caregivers are trained, background-checked, and compassionate.",
-  },
-];
-
 const getServiceDetails = async (id) => {
-  return services.find((s) => s._id == id);
+  const data =
+    (await fetch(`${process.env.NEXTAUTH_URL}/api/services/${id}`).then((res) =>
+      res.json()
+    )) || [];
+  return data;
 };
 
 const ServiceDetail = async ({ params }) => {
@@ -52,7 +45,15 @@ const ServiceDetail = async ({ params }) => {
           <h1 className="text-4xl font-bold text-secondary mb-4">
             {service.title}
           </h1>
-          <p className="text-base-content/70 mb-6">{service.details}</p>
+          <p className="text-base-content/70 mb-6">{service.desc}</p>
+          <p className="text-base-content/70">
+            Cost per day:{" "}
+            <span className="text-secondary">${service.costPerDay}</span>
+          </p>
+          <p className="text-base-content/70 mb-6">
+            Cost per hour:{" "}
+            <span className="text-secondary">${service.costPerHour}</span>
+          </p>
           <Link
             href={`/services/booking/${service._id}`}
             className="btn btn-secondary bg-secondary skeleton btn-lg hover:scale-105 transition font-semibold"
@@ -79,3 +80,34 @@ const ServiceDetail = async ({ params }) => {
 };
 
 export default ServiceDetail;
+
+export async function generateMetadata({ params }) {
+  const { service_id } = await params;
+  const service = await getServiceDetails(service_id);
+
+  if (!service) {
+    return {
+      title: "Service Not Found | Care.com",
+    };
+  }
+
+  return {
+    title: `${service.title} | Care.com`,
+    description: service.desc,
+    openGraph: {
+      title: service.title,
+      description: service.desc,
+      url: `https://localhost:3000/services/${service_id}`,
+      siteName: "Care.com",
+      images: [
+        {
+          url: service.img,
+          width: 800,
+          height: 600,
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+  };
+}
