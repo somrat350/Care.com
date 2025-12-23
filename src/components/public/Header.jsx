@@ -8,16 +8,35 @@ import { HiMenuAlt1 } from "react-icons/hi";
 import { HiXMark } from "react-icons/hi2";
 import NavLink from "../NavLink";
 import Logo from "./Logo";
+import { signOut, useSession } from "next-auth/react";
+import Swal from "sweetalert2";
 
 const Header = () => {
+  const { data: session } = useSession();
+  const user = session?.user;
+
   const [openMenu, setOpenMenu] = useState(false);
   const [theme, setTheme] = useState(true);
-  const user = {
-    displayName: "somrat",
-    photoURL: "https://i.ibb.co/27CFxgft/round-icon.png",
-  };
+
   const logout = async () => {
-    return;
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You cannot be access private pages!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, logout it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        signOut().then((res) => {
+          Swal.fire({
+            title: "Logged out!",
+            icon: "success",
+          });
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -65,12 +84,12 @@ const Header = () => {
           {theme ? <FaMoon /> : <FaSun className="text-orange-500" />}
         </button>
       </div>
-      {!user ? (
+      {user ? (
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="cursor-pointer m-1">
             <Image
               src={user?.photoURL}
-              alt="BloodLine"
+              alt="Car.com"
               width="40"
               height="40"
               className="w-10 h-10 rounded-full"

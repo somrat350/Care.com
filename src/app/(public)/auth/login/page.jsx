@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function Login() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,9 +21,12 @@ export default function Login() {
       redirect: false,
     });
 
-    if (!res.error) {
-      router.push("/dashboard");
-    }
+    console.log(res);
+    
+
+    // if (!res.error) {
+    //   router.push("/dashboard");
+    // }
   };
 
   return (

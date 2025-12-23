@@ -31,12 +31,9 @@ export const authOptions = {
         );
 
         if (!isPasswordCorrect) throw new Error("Invalid password");
+        delete user.password;
 
-        return {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-        };
+        return user;
       },
     }),
   ],

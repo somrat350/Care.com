@@ -2,17 +2,58 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
+  const router = useRouter();
+  const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passValidateText, setPassValidateText] = useState("");
 
-  const handleSubmit = async (e) => {};
+  // password validation
+  const passwordValidate = (e) => {
+    const tempPass = e.target.value;
+    setPassword("");
+
+    if (!/[a-z]/.test(tempPass)) {
+      setPassValidateText("Password must contain lowercase.");
+      return;
+    } else if (!/[A-Z]/.test(tempPass)) {
+      setPassValidateText("Password must contain Uppercase.");
+      return;
+    } else if (tempPass.length < 6) {
+      setPassValidateText("Password must 6 letters.");
+      return;
+    } else {
+      setPassValidateText("");
+      setPassword(tempPass);
+      return;
+    }
+  };
+
+  const formSubmit = async (data) => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await axios.post("/api/auth/register", data);
+      if (res.data.insertedId) {
+        router.push("/");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center my-10">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(formSubmit)}
         className="card w-full max-w-xl bg-base-300 border border-secondary shadow-xl p-6"
       >
         <h2 className="text-2xl font-bold text-secondary mb-4">
@@ -22,7 +63,7 @@ export default function Register() {
         {error && <p className="text-error text-sm mb-2">{error}</p>}
 
         <input
-          name="name"
+          {...register("name")}
           type="text"
           placeholder="Full Name"
           className="input w-full mb-3"
@@ -30,7 +71,7 @@ export default function Register() {
         />
 
         <input
-          name="name"
+          {...register("nidNumber")}
           type="number"
           placeholder="NID Number"
           className="input w-full mb-3"
@@ -38,7 +79,7 @@ export default function Register() {
         />
 
         <input
-          name="name"
+          {...register("contactNumber")}
           type="number"
           placeholder="Contact Number"
           className="input w-full mb-3"
@@ -46,7 +87,7 @@ export default function Register() {
         />
 
         <input
-          name="email"
+          {...register("email")}
           type="email"
           placeholder="Email"
           className="input w-full mb-3"
@@ -54,12 +95,17 @@ export default function Register() {
         />
 
         <input
-          name="password"
+          {...register("password")}
+          onChange={passwordValidate}
           type="password"
           placeholder="Password"
           className="input w-full mb-4"
           required
         />
+
+        <span className="text-[12px] text-right text-secondary mb-4">
+          {passValidateText}
+        </span>
 
         <button className="btn btn-secondary w-full skeleton bg-secondary hover:scale-105 transition">
           <span className={`${loading ? "loading" : ""}`}></span>
