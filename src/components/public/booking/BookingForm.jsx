@@ -49,7 +49,7 @@ const BookingForm = ({ wareHouses, service }) => {
     const newBooking = {
       email: session.user.email,
       name: session.user.name,
-      location: `${data.division}, ${data.district}, ${data.area}`,
+      address: `${data.division}, ${data.district}, ${data.area}`,
       serviceId: service._id,
       serviceName: service.title,
       cost,
@@ -71,7 +71,7 @@ const BookingForm = ({ wareHouses, service }) => {
       if (result.isConfirmed) {
         setLoading(true);
         axios
-          .post("/api/booking", newBooking)
+          .post("/api/bookings", newBooking)
           .then((res) => {
             if (res.data.insertedId) {
               Swal.fire({

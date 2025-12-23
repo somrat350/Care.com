@@ -4,7 +4,8 @@ import Link from "next/link";
 
 const getMyBookings = async (email) => {
   const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/booking?email=${email}`
+    `${process.env.NEXTAUTH_URL}/api/bookings?email=${email}`,
+    { cache: "no-store" }
   );
   const data = await res.json();
   return data || [];
@@ -28,7 +29,7 @@ const MyBookingsPage = async () => {
                 <tr>
                   <th>Service</th>
                   <th>Duration</th>
-                  <th>Location</th>
+                  <th>Address</th>
                   <th>Total Cost</th>
                   <th>Status</th>
                   <th>Action</th>

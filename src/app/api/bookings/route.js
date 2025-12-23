@@ -1,11 +1,11 @@
 const { connect } = require("@/lib/connectDB");
 
-const bookingCollection = await connect("booking");
+const bookingsCollection = await connect("bookings");
 
 export async function POST(req) {
   try {
     const newBooking = await req.json();
-    const result = await bookingCollection.insertOne(newBooking);
+    const result = await bookingsCollection.insertOne(newBooking);
     return Response.json(result);
   } catch (error) {
     return Response.json({ message: error }, { status: 500 });
@@ -20,7 +20,7 @@ export async function GET(req) {
     if (email) {
       query.email = email;
     }
-    const result = await bookingCollection.find(query).toArray();
+    const result = await bookingsCollection.find(query).toArray();
     return Response.json(result);
   } catch (error) {
     return Response.json({ message: error }, { status: 500 });
