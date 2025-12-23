@@ -11,3 +11,18 @@ export async function POST(req) {
     return Response.json({ message: error }, { status: 500 });
   }
 }
+
+export async function GET(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const email = searchParams.get("email");
+    const query = {};
+    if (email) {
+      query.email = email;
+    }
+    const result = await bookingCollection.find(query).toArray();
+    return Response.json(result);
+  } catch (error) {
+    return Response.json({ message: error }, { status: 500 });
+  }
+}

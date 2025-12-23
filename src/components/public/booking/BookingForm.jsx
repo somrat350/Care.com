@@ -49,11 +49,7 @@ const BookingForm = ({ wareHouses, service }) => {
     const newBooking = {
       email: session.user.email,
       name: session.user.name,
-      location: {
-        division: data.division,
-        district: data.district,
-        area: data.area,
-      },
+      location: `${data.division}, ${data.district}, ${data.area}`,
       serviceId: service._id,
       serviceName: service.title,
       cost,

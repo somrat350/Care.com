@@ -63,8 +63,8 @@ const Header = () => {
       </NavLink>
       {user && (
         <>
-          <NavLink className="navLink" href="/myBooking">
-            My Booking
+          <NavLink className="navLink" href="/myBookings">
+            My Bookings
           </NavLink>
         </>
       )}
@@ -87,9 +87,9 @@ const Header = () => {
       {user ? (
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="cursor-pointer m-1">
-            {user.photoURL ? (
+            {user.image ? (
               <Image
-                src={user?.photoURL}
+                src={user?.image}
                 alt="Car.com"
                 width="40"
                 height="40"
