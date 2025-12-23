@@ -68,12 +68,15 @@ const BookingForm = ({ wareHouses, service }) => {
       if (result.isConfirmed) {
         setLoading(true);
         axios
-          .post("/api/bookings", newBooking)
-          .then((res) => {
+          .post(`/api/bookings`, newBooking)
+          .then(async (res) => {
             if (res.data.insertedId) {
+              // Send email invoice
+              const result = await axios.post(`/api/send-invoice`, newBooking);
+              console.log(result);
               Swal.fire({
                 title: "Booked!",
-                text: "Service booking successful!",
+                text: "Service booking successful. Please check your email!",
                 icon: "success",
               });
             }
