@@ -1,14 +1,19 @@
 "use client";
 
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import Swal from "sweetalert2";
 
-const BookingForm = ({ wareHouses }) => {
+const BookingForm = ({ wareHouses, service }) => {
+  const { data: session } = useSession();
   const { register, handleSubmit, control } = useForm({
     defaultValues: {
       durationType: "days",
     },
   });
+  const [loading, setLoading] = useState(false);
   const division = useWatch({ control, name: "division" });
   const durationType = useWatch({ control, name: "durationType" });
   const duration = useWatch({ control, name: "duration" });
@@ -41,7 +46,50 @@ const BookingForm = ({ wareHouses }) => {
   };
 
   const formSubmit = (data) => {
-    console.log(data);
+    const newBooking = {
+      email: session.user.email,
+      name: session.user.name,
+      location: {
+        division: data.division,
+        district: data.district,
+        area: data.area,
+      },
+      serviceId: service._id,
+      serviceName: service.title,
+      cost,
+      duration,
+      durationType,
+      status: "pending",
+      createdAt: new Date(),
+    };
+
+    Swal.fire({
+      title: "Are you sure to booking?",
+      text: `You should pay the cost $${cost}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, booked it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        axios
+          .post("/api/booking", newBooking)
+          .then((res) => {
+            if (res.data.insertedId) {
+              Swal.fire({
+                title: "Booked!",
+                text: "Service booking successful!",
+                icon: "success",
+              });
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+    });
   };
 
   return (
@@ -138,6 +186,7 @@ const BookingForm = ({ wareHouses }) => {
         // onClick={handleBooking}
         className="btn btn-secondary skeleton bg-secondary hover:scale-105 transition mt-4 font-semibold"
       >
+        <span className={`${loading ? "loading" : ""}`}></span>
         Confirm Booking
       </button>
     </form>

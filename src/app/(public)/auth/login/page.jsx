@@ -1,38 +1,40 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function Login() {
+  const { status } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const [loading, setLoading] = useState(false);
+  const { register, handleSubmit } = useForm();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  if (status === "loading") return;
+  if (status === "authenticated") {
+    router.push(callbackUrl);
+  }
 
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-
+  const formSubmit = async (data) => {
+    setLoading(true);
     const res = await signIn("credentials", {
-      email,
-      password,
+      ...data,
       redirect: false,
     });
-
-    console.log(res);
-    
-
-    // if (!res.error) {
-    //   router.push("/dashboard");
-    // }
+    setLoading(false);
+    if (!res.error) {
+      router.push(callbackUrl);
+    }
   };
 
   return (
     <div className="flex items-center justify-center my-10">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(formSubmit)}
         className="card w-full max-w-xl bg-base-300 border border-secondary shadow-xl p-6"
       >
         <h2 className="text-2xl font-bold text-secondary mb-4">
@@ -40,14 +42,16 @@ export default function Login() {
         </h2>
 
         <input
-          name="email"
+          {...register("email")}
+          required
           type="email"
           placeholder="Email"
           className="input input-bordered w-full mb-3"
         />
 
         <input
-          name="password"
+          {...register("password")}
+          required
           type="password"
           placeholder="Password"
           className="input input-bordered w-full mb-4"

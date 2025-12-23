@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import BookingForm from "@/components/public/booking/BookingForm";
+import PrivatePageProtector from "@/components/PrivatePageProtector";
 
 const services = [
   {
@@ -38,24 +39,26 @@ const BookingPage = async ({ params }) => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto sm:py-10">
-      <h1 className="text-4xl font-bold text-secondary mb-6">
-        Book {service.title}
-      </h1>
+    <PrivatePageProtector>
+      <div className="max-w-6xl mx-auto sm:py-10">
+        <h1 className="text-4xl font-bold text-secondary mb-6">
+          Book {service.title}
+        </h1>
 
-      <div className="flex flex-col md:flex-row gap-10">
-        {/* Service Image */}
-        <div className="relative w-full md:w-1/2 h-64 md:h-80">
-          <Image
-            src={service.img}
-            alt={service.title}
-            fill
-            className="object-cover rounded-lg"
-          />
+        <div className="flex flex-col md:flex-row gap-10">
+          {/* Service Image */}
+          <div className="relative w-full md:w-1/2 h-64 md:h-80">
+            <Image
+              src={service.img}
+              alt={service.title}
+              fill
+              className="object-cover rounded-lg"
+            />
+          </div>
+          <BookingForm service={service} wareHouses={wareHouses} />
         </div>
-        <BookingForm wareHouses={wareHouses} />
       </div>
-    </div>
+    </PrivatePageProtector>
   );
 };
 

@@ -87,13 +87,19 @@ const Header = () => {
       {user ? (
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="cursor-pointer m-1">
-            <Image
-              src={user?.photoURL}
-              alt="Car.com"
-              width="40"
-              height="40"
-              className="w-10 h-10 rounded-full"
-            />
+            {user.photoURL ? (
+              <Image
+                src={user?.photoURL}
+                alt="Car.com"
+                width="40"
+                height="40"
+                className="w-10 h-10 rounded-full"
+              />
+            ) : (
+              <div className="w-10 h-10 bg-secondary p-2 rounded-full flex justify-center items-center text-base">
+                {user.name.slice(0, 2)}
+              </div>
+            )}
           </div>
           <ul
             tabIndex="-1"
