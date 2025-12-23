@@ -1,4 +1,5 @@
 import PrivatePageProtector from "@/components/PrivatePageProtector";
+import CancelBookingButton from "@/components/public/booking/CancelBookingButton";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 
@@ -69,7 +70,12 @@ const MyBookingsPage = async () => {
                       </Link>
 
                       {booking.status === "pending" && (
-                        <button className="btn btn-xs btn-error">Cancel</button>
+                        <CancelBookingButton
+                          className="btn btn-xs btn-secondary"
+                          id={booking._id}
+                        >
+                          Cancel
+                        </CancelBookingButton>
                       )}
                     </td>
                   </tr>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PrivatePageProtector from "@/components/PrivatePageProtector";
+import CancelBookingButton from "@/components/public/booking/CancelBookingButton";
 
 const statusColor = {
   pending: "badge-warning",
@@ -73,7 +74,7 @@ const BookingDetailsPage = async ({ params }) => {
               <div>
                 <p className="text-sm text-base-content/60">Booked On</p>
                 <p className="font-semibold">
-                  {new Date(booking.createdAt).toISOString()}
+                  {new Date(booking.createdAt).toLocaleString()}
                 </p>
               </div>
             </div>
@@ -81,9 +82,12 @@ const BookingDetailsPage = async ({ params }) => {
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               {booking.status === "pending" && (
-                <button className="btn btn-error text-white flex-1">
+                <CancelBookingButton
+                  className="btn btn-secondary flex-1"
+                  id={booking._id}
+                >
                   Cancel Booking
-                </button>
+                </CancelBookingButton>
               )}
 
               <Link href="/myBookings" className="btn btn-outline flex-1">
