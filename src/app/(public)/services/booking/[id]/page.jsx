@@ -1,26 +1,31 @@
-"use server";
-
 import Link from "next/link";
 import Image from "next/image";
 import BookingForm from "@/components/public/booking/BookingForm";
 import PrivatePageProtector from "@/components/PrivatePageProtector";
 
+import wareHouses from "../../../../../../public/location.json";
+
+export const dynamic = "force-dynamic";
+
 const getServiceDetails = async (id) => {
-  const data =
-    (await fetch(`${process.env.NEXTAUTH_URL}/api/services/${id}`).then((res) =>
-      res.json()
-    )) || [];
-  return data;
+  try {
+    // Option 1: If you have an external API
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const res = await fetch(`${baseUrl}/api/services/${id}`, {
+      cache: 'no-store' // Ensures fresh data
+    });
+    
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching service:", error);
+    return null;
+  }
 };
 
-const wareHouses =
-  (await fetch(`${process.env.NEXTAUTH_URL}/location.json`).then((res) =>
-    res.json()
-  )) || [];
-
 const BookingPage = async ({ params }) => {
-  const { service_id } = await params;
-  const service = await getServiceDetails(service_id);
+  const { id } = await params;
+  const service = await getServiceDetails(id);
 
   // If service not found
   if (!service) {
@@ -43,7 +48,6 @@ const BookingPage = async ({ params }) => {
         <h1 className="text-4xl font-bold text-secondary mb-6">
           Book {service.title}
         </h1>
-
         <div className="flex flex-col md:flex-row gap-10">
           {/* Service Image */}
           <div className="relative w-full md:w-1/2 h-64 md:h-80">
@@ -64,8 +68,8 @@ const BookingPage = async ({ params }) => {
 export default BookingPage;
 
 export async function generateMetadata({ params }) {
-  const { service_id } = await params;
-  const service = await getServiceDetails(service_id);
+  const { id } = await params;
+  const service = await getServiceDetails(id);
 
   if (!service) {
     return {
@@ -79,7 +83,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: service.title,
       description: service.desc,
-      url: `${process.env.NEXTAUTH_URL}/services/${service_id}`,
+      url: `/services/${id}`,
       siteName: "Care.com",
       images: [
         {

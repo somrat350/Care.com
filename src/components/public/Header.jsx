@@ -98,7 +98,7 @@ const Header = () => {
                 className="w-10 h-10 rounded-full"
               />
             ) : (
-              <div className="w-10 h-10 bg-secondary p-2 rounded-full flex justify-center items-center text-base">
+              <div className="w-10 h-10 bg-secondary p-2 rounded-full flex justify-center items-center text-base text-white font-bold">
                 {user.name.slice(0, 2)}
               </div>
             )}
@@ -107,11 +107,6 @@ const Header = () => {
             tabIndex="-1"
             className="dropdown-content menu bg-base-100 rounded-box z-1 w-fit min-w-52 p-2 shadow-sm gap-2"
           >
-            <li>
-              <Link href="/profile" className="btn btn-outline btn-secondary">
-                Profile
-              </Link>
-            </li>
             <li>
               <button onClick={logout} className="btn btn-secondary">
                 Logout

@@ -78,7 +78,7 @@ export async function POST(req) {
 
         <!-- CTA -->
         <div style="text-align:center; margin:30px 0;">
-          <a href="${process.env.NEXTAUTH_URL}/myBookings"
+          <a href="/myBookings"
             style="
               background:#fa3098;
               color:#ffffff;

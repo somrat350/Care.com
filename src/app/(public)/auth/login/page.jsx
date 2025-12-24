@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const { status } = useSession();
@@ -27,6 +28,13 @@ export default function Login() {
     });
     setLoading(false);
     if (!res.error) {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Login successful.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       router.push(callbackUrl);
     }
   };

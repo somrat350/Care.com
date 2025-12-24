@@ -1,7 +1,7 @@
 import Link from "next/link";
 import PrivatePageProtector from "@/components/PrivatePageProtector";
 import CancelBookingButton from "@/components/public/booking/CancelBookingButton";
-
+export const dynamic = "force-dynamic";
 const statusColor = {
   pending: "badge-warning",
   confirmed: "badge-info",
@@ -10,7 +10,7 @@ const statusColor = {
 };
 
 const getSingleBooking = async (id) => {
-  const data = await fetch(`${process.env.NEXTAUTH_URL}/api/bookings/${id}`, {
+  const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bookings/${id}`, {
     cache: "no-store",
   }).then((res) => res.json());
   return data || {};

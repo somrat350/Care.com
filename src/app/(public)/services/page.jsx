@@ -1,11 +1,9 @@
-"use server";
-
 import Image from "next/image";
 import Link from "next/link";
-
+export const dynamic = "force-dynamic";
 export default async function AllServicesPage() {
   const services =
-    (await fetch(`${process.env.NEXTAUTH_URL}/api/services`).then((res) =>
+    (await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services`).then((res) =>
       res.json()
     )) || [];
   return (

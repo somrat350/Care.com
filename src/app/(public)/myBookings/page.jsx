@@ -1,14 +1,13 @@
-"use server";
-
 import PrivatePageProtector from "@/components/PrivatePageProtector";
 import CancelBookingButton from "@/components/public/booking/CancelBookingButton";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 const getMyBookings = async (email) => {
   const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/bookings?email=${email}`,
-    { cache: "no-store" }
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookings?email=${email}`
   );
   const data = await res.json();
   return data || [];

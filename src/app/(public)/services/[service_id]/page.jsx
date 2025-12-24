@@ -1,11 +1,9 @@
-"use server";
-
 import Image from "next/image";
 import Link from "next/link";
-
+export const dynamic = "force-dynamic";
 const getServiceDetails = async (id) => {
   const data =
-    (await fetch(`${process.env.NEXTAUTH_URL}/api/services/${id}`).then((res) =>
+    (await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services/${id}`).then((res) =>
       res.json()
     )) || [];
   return data;

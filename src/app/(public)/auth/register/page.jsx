@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import Swal from "sweetalert2";
 
 export default function Register() {
   const router = useRouter();
@@ -40,8 +42,22 @@ export default function Register() {
     setError("");
     try {
       const res = await axios.post("/api/auth/register", data);
-      if (res.data.insertedId) {
-        router.push("/");
+      if (res.data.success) {
+        const loginRes = await signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        });
+        if (!loginRes?.error) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Register successful.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          router.push("/");
+        }
       }
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");

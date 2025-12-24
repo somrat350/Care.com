@@ -28,7 +28,9 @@ export async function POST(req) {
       createdAt: new Date(),
     });
 
-    return Response.json(result);
+    if (result.insertedId) {
+      return Response.json({ success: true });
+    }
   } catch (error) {
     return Response.json({ message: error }, { status: 500 });
   }
