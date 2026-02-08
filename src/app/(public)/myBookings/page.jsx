@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 const getMyBookings = async (email) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookings?email=${email}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookings?email=${email}`,
   );
   const data = await res.json();
   return data || [];
@@ -19,7 +19,6 @@ const MyBookingsPage = async () => {
 
   return (
     <PrivatePageProtector>
-      <title>My Bookings || Care.com</title>
       <div className="max-w-7xl mx-auto my-10">
         <h1 className="text-4xl font-bold text-secondary mb-8">My Bookings</h1>
 
@@ -56,10 +55,10 @@ const MyBookingsPage = async () => {
                           booking.status === "pending"
                             ? "badge-warning"
                             : booking.status === "confirmed"
-                            ? "badge-info"
-                            : booking.status === "completed"
-                            ? "badge-success"
-                            : "badge-error"
+                              ? "badge-info"
+                              : booking.status === "completed"
+                                ? "badge-success"
+                                : "badge-error"
                         }`}
                       >
                         {booking.status}
@@ -94,3 +93,8 @@ const MyBookingsPage = async () => {
 };
 
 export default MyBookingsPage;
+
+export const metadata = {
+  title: "My Bookings || Care.com",
+  description: "View and manage your bookings with Care.com.",
+};

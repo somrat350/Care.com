@@ -3,12 +3,11 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 export default async function AllServicesPage() {
   const services =
-    (await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services`).then((res) =>
-      res.json()
+    (await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services`).then(
+      (res) => res.json(),
     )) || [];
   return (
-    <div className="">
-      <title>Our Services | Care.com</title>
+    <div>
       {/* Hero Section */}
       <section className="py-10 bg-base-200 rounded-2xl">
         <div className="max-w-6xl mx-auto px-6 text-center">
@@ -51,3 +50,9 @@ export default async function AllServicesPage() {
     </div>
   );
 }
+
+export const metadata = {
+  title: "Our Services | Care.com",
+  description:
+    "Explore our range of care services designed for every stage of life.",
+};

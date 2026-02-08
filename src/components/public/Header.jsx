@@ -63,6 +63,12 @@ const Header = () => {
       <NavLink className="navLink" href="/services">
         Services
       </NavLink>
+      <NavLink className="navLink" href="/about">
+        About
+      </NavLink>
+      <NavLink className="navLink" href="/contact">
+        Contact
+      </NavLink>
       {user && (
         <>
           <NavLink className="navLink" href="/myBookings">
